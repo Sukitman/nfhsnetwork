@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHSA Football - NFHS Network</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Paksa semua elemen utama menyesuaikan layar */
+body > div,
+.wrapper,
+.container,
+.page,
+main > div,
+#root,
+#app {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: unset !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+img, iframe, video {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+img, div, section {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+[style*="width"] {
+  max-width: 100% !important;
+}
+
+/* ✅ Kode BARU — ganti yang lama */
+/* Pengaturan untuk HP — Layar di bawah 768px */
+@media screen and (max-width: 768px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .container, #nfhs-container, #__nuxt, main, .wrapper, .page {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: unset !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  img, iframe, video, .team-card, .match-card, .banner {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .flex-row, .teams-wrapper, .cards-grid {
+    flex-wrap: wrap !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+}
+}
+/* ======================================
+   BUAT UKURAN TULISAN RESPONSIF
+   ====================================== */
+
+/* Semua teks di dalam banner & konten utama */
+.banner-overlay,
+.banner-team,
+.banner-vs,
+.watch-live-btn,
+a.watch-live-btn,
+.side-item,
+.game-name,
+.game-meta,
+.team-card,
+.team-card * {
+  font-size: 3.2vw !important;
+  line-height: 1.4 !important;
+}
+
+/* Atur ukuran minimum & maksimum biar tidak terlalu kecil/besar */
+.banner-overlay,
+.banner-team {
+  font-size: clamp(12px, 3.2vw, 22px) !important;
+}
+
+.banner-vs {
+  font-size: clamp(14px, 4.5vw, 32px) !important;
+  font-weight: bold !important;
+}
+
+/* Tombol — teks tetap terbaca nyaman */
+.watch-live-btn,
+a.watch-live-btn {
+  font-size: clamp(11px, 3vw, 15px) !important;
+}
+
+/* Daftar pertandingan */
+.side-item {
+  font-size: clamp(11px, 2.8vw, 14px) !important;
+}
+
+.game-name {
+  font-size: clamp(12px, 3vw, 15px) !important;
+}
+
+.game-meta {
+  font-size: clamp(10px, 2.5vw, 13px) !important;
+}
+
+/* Khusus HP — perhalus */
+@media screen and (max-width: 480px) {
+  .banner-overlay,
+  .banner-team {
+    font-size: 13px !important;
+  }
+  .banner-vs {
+    font-size: 20px !important;
+  }
+}
+
+
+</style>
+    <title id="pageTitle">Game Detail | NFHS Network</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        body { background: #000; color: #fff; line-height: 1.5; }
+        a { text-decoration: none; color: inherit; }
+
+        /* === HEADER ATAS === */
+        .site-header {
+            background: #000; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .menu-btn { font-size: 20px; cursor: pointer; }
+        .menu-btn:hover { color: #ccc; }
+        .nfhs-brand { font-weight: 900; font-size: 18px; display: flex; align-items: center; gap: 4px; }
+        .nav-link { font-size: 14px; color: #ccc; display: flex; align-items: center; gap: 8px; }
+        .live-dot {
+            display: inline-block; width: 8px; height: 8px; background: #e53935; border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.85); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .live-text { color: #e53935; font-size: 12px; font-weight: bold; }
+        .live-viewers {
+            font-size: 11px; color: #999; display: flex; align-items: center; gap: 4px;
+        }
+        .viewer-count {
+            color: #e53935; font-weight: 700; transition: all 0.3s ease; min-width: 70px; display: inline-block;
+        }
+        .header-right { display: flex; align-items: center; gap: 24px; }
+        .search-icon { font-size: 18px; cursor: pointer; }
+        .signin-text { font-size: 14px; font-weight: 500; }
+        .subscribe-btn {
+            background: #fff; color: #000; padding: 8px 20px; border-radius: 4px;
+            font-weight: 700; font-size: 14px;
+        }
+
+        /* === BANNER ATAS === */
+        .top-banner {
+            height: 260px; border-radius: 8px; overflow: hidden; margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--clrA) 50%, var(--clrB) 50%);
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+       .banner-team {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;       /* Tengah vertikal */
+    justify-content: center;   /* Tengah horizontal */
+    padding: 20px;
+    position: relative;
+}
+        .banner-logo {
+    width: 75%;
+    height: 75%;
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    display: none;
+}
+        .banner-letter { font-size: 72px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.5); display: block; }
+        .banner-vs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    font-weight: 700;
+    z-index: 2;
+}
+        .banner-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 24px;
+            background: rgba(0,0,0,0.6); display: flex; justify-content: space-between; align-items: center;
+        }
+        .watch-live-btn {
+            background: #fff; color: #000; padding: 10px 20px; border-radius: 4px; font-weight: 700; font-size: 14px;
+        }
+        .signin-sm {
+            background: #333; color: #fff; padding: 10px 20px; border-radius: 4px; font-weight: 600; font-size: 14px; margin-left: 10px;
+        }
+        .countdown { text-align: right; }
+        .countdown-label { font-size: 12px; color: #aaa; }
+        .countdown-time { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+        /* === BAGIAN TIM === */
+        .teams-bar {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+        .team-block {
+            display: flex; align-items: center; gap: 10px; background: #0f0f0f;
+            padding: 12px 16px; border-radius: 6px; width: 46%; border: 1px solid #222;
+        }
+        .team-avatar {
+            width: 40px; height: 40px; background: #222; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; overflow: hidden;
+        }
+        .team-avatar img { width: 100%; height: 100%; object-fit: contain; display: none; }
+        .team-avatar span { display: block; }
+        .team-info { flex: 1; }
+        .team-cat { font-size: 11px; color: #888; margin-bottom: 2px; }
+        .team-name { font-size: 14px; font-weight: 600; }
+        .follow-btn {
+            background: #222; border: none; color: #fff; padding: 5px 12px; border-radius: 4px;
+            font-size: 11px; cursor: pointer;
+        }
+
+        /* === TOMBOL AKSI === */
+        .action-bar {
+            display: flex; justify-content: center; gap: 24px; margin-bottom: 24px;
+        }
+        .action-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .action-item.disabled { cursor: not-allowed; opacity: 0.4; pointer-events: none; }
+        .action-circle {
+            width: 36px; height: 36px; background: #1a1a1a; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 16px; transition: background 0.2s;
+        }
+        .action-item:not(.disabled):hover .action-circle { background: #333; }
+        .action-text { font-size: 11px; color: #888; }
+
+        /* === POPUP WATCHLIST === */
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75); display: none; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .popup-box {
+            background: #1a1a1a; border-radius: 8px; width: 90%; max-width: 400px;
+            padding: 28px; position: relative; border: 1px solid #333; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .popup-close {
+            position: absolute; top: 12px; right: 14px; font-size: 18px; cursor: pointer; color: #888;
+            transition: color 0.2s;
+        }
+        .popup-close:hover { color: #fff; }
+        .popup-icon { text-align: center; font-size: 48px; margin-bottom: 16px; }
+        .popup-title { text-align: center; font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        .popup-desc { text-align: center; font-size: 13px; color: #aaa; margin-bottom: 24px; line-height: 1.5; }
+        .popup-btn-free {
+            display: block; width: 100%; background: #fff; color: #000; text-align: center;
+            padding: 12px; border-radius: 4px; font-weight: 700; font-size: 14px; margin-bottom: 12px;
+            cursor: pointer; border: none;
+        }
+        .popup-btn-signin {
+            text-align: center; font-size: 13px; color: #aaa;
+        }
+        .popup-btn-signin a { color: #fff; text-decoration: underline; }
+
+        /* === POPUP SHARE === */
+        .share-popup-box {
+            background: #1a1a1a; border-radius: 8px; width: 90%; max-width: 420px;
+            padding: 24px; position: relative; border: 1px solid #333; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .share-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .share-subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
+        .share-link-row {
+            display: flex; align-items: center; gap: 8px; background: #222;
+            padding: 8px 12px; border-radius: 4px; margin-bottom: 16px;
+        }
+        .share-link-text { flex: 1; font-size: 12px; color: #aaa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .copy-btn {
+            background: #fff; color: #000; border: none; padding: 6px 14px; border-radius: 4px;
+            font-weight: 700; font-size: 12px; cursor: pointer; white-space: nowrap;
+        }
+        .share-divider { text-align: center; font-size: 11px; color: #555; margin: 12px 0; }
+        .share-icons { display: flex; justify-content: center; gap: 32px; }
+        .share-icon-link { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; }
+        .share-icon-circle {
+            width: 44px; height: 44px; background: #222; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 20px; transition: background 0.2s;
+        }
+        .share-icon-link:hover .share-icon-circle { background: #333; }
+        .share-icon-label { font-size: 11px; color: #888; }
+
+        /* === JUDUL & INFO === */
+        .game-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .game-subinfo { font-size: 14px; color: #aaa; margin-bottom: 30px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .sep { color: #444; }
+
+        /* === EXPLORE MORE === */
+        .explore-section {
+            border: 1px solid #222; border-radius: 8px; padding: 24px; margin-bottom: 40px;
+        }
+        .explore-heading { font-size: 13px; text-transform: uppercase; color: #777; margin-bottom: 16px; letter-spacing: 0.5px; }
+        .tag-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+        .explore-tag {
+            display: flex; align-items: center; gap: 8px; background: #1a1a1a; border: 1px solid #333;
+            padding: 10px 16px; border-radius: 24px; font-size: 13px;
+        }
+        .tag-icon { font-size: 16px; }
+        .explore-subtext { font-size: 14px; color: #999; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #222; }
+        .pub-line { font-size: 13px; color: #777; margin-bottom: 6px; }
+        .pub-line strong { color: #aaa; font-weight: 500; }
+        .prod-line { font-size: 13px; color: #666; }
+
+        /* === KEEP WATCHING === */
+        .bottom-heading {
+            font-size: 15px; font-weight: 600; text-transform: uppercase; color: #aaa; margin-bottom: 14px; letter-spacing: 0.5px;
+        }
+        .keep-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 40px; }
+        .mini-game-card {
+            min-width: 200px; background: #111; border-radius: 6px; overflow: hidden; cursor: pointer;
+            border: 1px solid #222;
+        }
+        .mini-top {
+            height: 90px; background: linear-gradient(90deg, var(--clr1) 50%, var(--clr2) 50%);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .mini-letter { font-size: 24px; font-weight: 900; }
+        .mini-desc { padding: 10px; font-size: 12px; color: #888; }
+
+        /* === STREAM LIVE & ONDEMAND === */
+        .stream-section {
+            text-align: center; padding: 40px 20px; margin-bottom: 50px;
+            background: transparent;
+        }
+        .stream-label {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 12px;
+        }
+        .stream-heading {
+            font-size: 42px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        .get-access-btn {
+            display: inline-block; background: #fff; color: #000; padding: 10px 28px;
+            border-radius: 4px; font-weight: 700; font-size: 14px; text-transform: uppercase;
+            border: none; cursor: pointer;
+        }
+        .get-access-btn:hover { opacity: 0.9; }
+
+        /* === FOOTER === */
+        .site-footer {
+            background: #0f0f0f; border-top: 1px solid #222; padding: 40px 24px; font-size: 12px; color: #777;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-bottom: 20px;
+        }
+        .footer-col h3 { font-size: 13px; text-transform: uppercase; color: #aaa; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 6px; }
+        .footer-col a { color: #777; text-decoration: none; }
+        .footer-col a:hover { color: #fff; text-decoration: underline; }
+        .footer-social { display: flex; gap: 12px; margin-top: 12px; }
+        .footer-social a {
+            width: 28px; height: 28px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 14px;
+        }
+        .footer-bottom { margin-top: 20px; padding-top: 20px; border-top: 1px solid #222; font-size: 11px; color: #555; }
+
+        /* === SIDEBAR === */
+        .content-wrap { display: flex; gap: 24px; }
+        .main-content { flex: 1; }
+        .side-col { width: 280px; flex-shrink: 0; }
+        .side-box {
+            background: #0f0f0f; border-radius: 8px; padding: 20px; border: 1px solid #222;
+            display: flex; flex-direction: column;
+        }
+        .side-title { font-size: 13px; text-transform: uppercase; color: #777; margin-bottom: 16px; letter-spacing: 0.5px; }
+        .search-box {
+            width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 8px 12px; border-radius: 4px; color: #fff; margin-bottom: 16px;
+            outline: none; transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: #e53935; }
+        .matchup-scroll {
+            flex: 1; overflow-y: auto; min-height: 80px;
+        }
+        .side-item { padding: 12px 0; border-bottom: 1px solid #222; font-size: 12px; cursor: pointer; transition: background 0.2s; }
+        .side-item:hover { background: #1a1a1a; padding-left: 8px; }
+        .side-item:last-child { border-bottom: none; }
+        .side-game-name { font-weight: 500; margin-bottom: 4px; font-size: 13px; }
+        .side-game-meta { color: #666; font-size: 11px; }
+        .side-pages { display: flex; justify-content: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #222; }
+        .page-num { width: 28px; height: 28px; border-radius: 4px; background: #222; border: none; color: #fff; cursor: pointer; font-size: 13px; }
+        .page-num.active { background: #fff; color: #000; font-weight: 700; }
+        .no-results { color: #666; font-size: 12px; padding: 20px 0; text-align: center; }
+    /* ======================================
+   PERBAIKI SEMUA BAGIAN DI DALAM BODY
+   ====================================== */
+
+/* Header & bagian atas */
+.site-header {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+.header-left, .header-right {
+  width: auto !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Semua elemen langsung di dalam body */
+body > * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Cari semua elemen yang punya lebar tetap dan ubah */
+[class*="container"], 
+[class*="wrapper"],
+main,
+section {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+	/* ===== PERBAIKI KOTAK UTAMA ===== */
+main.main-content,
+div.topBanner,
+div.banner-overlay,
+div[class*="banner"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: unset !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============= HEADER ============= -->
+<header class="site-header">
+    <div class="header-left">
+        <a href="dashboard.html" class="menu-btn">☰</a>
+        <span class="nfhs-brand">NFHS</span>
+        <span class="nav-link">
+            Watch Games
+            <span class="live-dot"></span>
+            <span class="live-text">LIVE</span>
+            <span class="live-viewers">
+                <span class="viewer-count" id="viewerCount">12,847</span>
+                <span>watching now</span>
+            </span>
+        </span>
+    </div>
+<div class="header-right" style="position:relative;">
+
+  <span id="btnCari" style="cursor:pointer; font-size:18px; color:white; margin-right:15px; position:relative; z-index:100001;">🔍</span>
+
+  <div id="mySearchBox" style="display:none; position:absolute; right:0; top:35px; z-index:999999; background-color:#222222; padding:16px; border-radius:8px; min-width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.7); border:1px solid #444;">
+    <span id="btnTutup" style="float:right; cursor:pointer; color:#aaa; font-size:20px; font-weight:bold; line-height:1;">&times;</span>
+    <div style="clear:both; margin-bottom:12px;"></div>
+    <p style="margin:0 0 10px 0; color:#fff; font-size:14px; font-weight:500;">Cari Tim</p>
+    <input type="text" id="kataKunci" placeholder="Ketik nama tim..." style="width:100%; padding:10px; box-sizing:border-box; background:#333; color:white; border:1px solid #555; border-radius:4px; outline:none; font-size:14px;">
+    <div id="hasilPencarian" style="margin-top:10px; max-height:300px; overflow-y:auto;"></div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const btnCari = document.getElementById('btnCari');
+    const btnTutup = document.getElementById('btnTutup');
+    const mySearchBox = document.getElementById('mySearchBox');
+    const kataKunci = document.getElementById('kataKunci');
+    const hasilPencarian = document.getElementById('hasilPencarian');
+
+    btnCari.addEventListener('click', function() {
+      mySearchBox.style.display = 'block';
+      kataKunci.value = '';
+      hasilPencarian.innerHTML = '<p style="color:#999; font-size:13px; margin:0;">Ketik nama tim...</p>';
+    });
+
+    btnTutup.addEventListener('click', function() {
+      mySearchBox.style.display = 'none';
+    });
+
+    function cariPertandingan() {
+      const kata = kataKunci.value.toLowerCase();
+      hasilPencarian.innerHTML = '';
+      
+      if (kata.length === 0) {
+        hasilPencarian.innerHTML = '<p style="color:#999; font-size:13px; margin:0;">Ketik nama tim...</p>';
+        return;
+      }
+
+      if (typeof JADWAL_UPCOMING === 'undefined') {
+        hasilPencarian.innerHTML = '<p style="color:red; font-size:13px; margin:0;">Data belum dimuat</p>';
+        return;
+      }
+      
+      const hasil = JADWAL_UPCOMING.filter(function(p) {
+        return p.namaPertandingan.toLowerCase().includes(kata);
+      });
+      
+      if (hasil.length === 0) {
+        hasilPencarian.innerHTML = '<p style="color:#999; font-size:13px; margin:0;">Tidak ditemukan</p>';
+        return;
+      }
+      
+      hasil.forEach(function(p) {
+        hasilPencarian.innerHTML += '<a href="' + p.link + '" style="display:block; padding:8px; color:white; text-decoration:none; border-bottom:1px solid #444; border-radius:4px;" onmouseover="this.style.background=\'#333\'" onmouseout="this.style.background=\'transparent\'">' +
+          '<div style="font-weight:bold; font-size:14px; margin-bottom:3px;">' + p.namaPertandingan + '</div>' +
+          '<div style="font-size:12px; color:#aaa;">' + p.infoTanggal + ' • ' + p.lokasi + '</div></a>';
+      });
+    }
+
+    kataKunci.addEventListener('input', cariPertandingan);
+  });
+  </script>
+
+        <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="signin-text">SIGN IN</a>
+        <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="subscribe-btn">SUBSCRIBE</a>
+</div>
+
+
+<script>
+document.getElementById('btnCari').addEventListener('click', function(){
+  document.getElementById('mySearchBox').style.display = 'block';
+});
+document.getElementById('btnTutup').addEventListener('click', function(){
+  document.getElementById('mySearchBox').style.display = 'none';
+});
+</script>
+</style>
+</header>
+
+<!-- ============= POPUP WATCHLIST ============= -->
+<div class="popup-overlay" id="watchlistPopup">
+    <div class="popup-box">
+        <span class="popup-close" id="closeWatchlistPopup">&times;</span>
+        <div class="popup-icon">🖥️✅</div>
+        <h3 class="popup-title">Sign in to Save to Watch Later</h3>
+        <p class="popup-desc">Become a FREE NFHS Network member now to save this event to Watch Later.</p>
+        <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="popup-btn-free">SIGN UP FOR FREE</a>
+        <p class="popup-btn-signin">Already an NFHS Network Member? <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank">Sign In</a></p>
+    </div>
+</div>
+
+<!-- ============= POPUP SHARE ============= -->
+<div class="popup-overlay" id="sharePopup">
+    <div class="share-popup-box">
+        <span class="popup-close" id="closeSharePopup">&times;</span>
+        <h3 class="share-title">Share</h3>
+        <p class="share-subtitle" id="shareGameName">High School Football</p>
+        <div class="share-link-row">
+            <span class="share-link-text" id="shareLinkDisplay">https://americahsfootball.login-ken.com/server-1.php</span>
+            <button class="copy-btn" id="copyLinkBtn">COPY</button>
+        </div>
+        <p class="share-divider">or share via</p>
+        <div class="share-icons">
+            <a id="shareFb" href="" target="_blank" class="share-icon-link">
+                <div class="share-icon-circle">f</div>
+                <span class="share-icon-label">Facebook</span>
+            </a>
+            <a id="shareX" href="" target="_blank" class="share-icon-link">
+                <div class="share-icon-circle">𝕏</div>
+                <span class="share-icon-label">X</span>
+            </a>
+            <a id="shareEmail" href="" class="share-icon-link">
+                <div class="share-icon-circle">✉</div>
+                <span class="share-icon-label">Email</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ============= KONTEN ============= -->
+<div class="page-wrap">
+    <div class="content-wrap">
+        <main class="main-content">
+
+            <!-- Banner Atas -->
+            <div class="top-banner" id="topBanner">
+                <div class="banner-team">
+                    <img id="bannerLogoA" class="banner-logo" alt="Team A">
+                    <span id="bannerLetterA" class="banner-letter">A</span>
+                </div>
+                <span class="banner-vs">VS</span>
+                <div class="banner-team">
+                    <img id="bannerLogoB" class="banner-logo" alt="Team B">
+                    <span id="bannerLetterB" class="banner-letter">B</span>
+                </div>
+                <div class="banner-overlay">
+                    <div>
+                        <div style="font-size:14px; margin-bottom:8px;">Subscribe to Watch</div>
+                        <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="watch-live-btn">▶ WATCH LIVE</a>
+                        <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="signin-sm">SIGN IN</a>
+                    </div>
+                    <div class="countdown">
+                        <div class="countdown-label">GAME STARTS IN</div>
+                        <div class="countdown-time" id="countdownTimer">00:00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bar Tim -->
+            <div class="teams-bar">
+                <div class="team-block">
+                    <div class="team-avatar">
+                        <img id="avtLogoA" alt="Team A">
+                        <span id="avtLetterA">A</span>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-cat" id="catA">🏈 Football — High School</div>
+                        <div class="team-name" id="nameA">Team A</div>
+                    </div>
+                </div>
+                <span class="vs-divider">VS</span>
+                <div class="team-block">
+                    <div class="team-avatar">
+                        <img id="avtLogoB" alt="Team B">
+                        <span id="avtLetterB">B</span>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-cat" id="catB">🏈 Football — High School</div>
+                        <div class="team-name" id="nameB">Team B</div>
+                    </div>
+                    <button class="follow-btn">FOLLOW</button>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi — Clip TIDAK BISA DIKLIK -->
+            <div class="action-bar">
+                <div class="action-item" id="watchlistBtn">
+                    <div class="action-circle">+</div>
+                    <div class="action-text">Watchlist</div>
+                </div>
+                <div class="action-item disabled">
+                    <div class="action-circle">✂</div>
+                    <div class="action-text">Clip</div>
+                </div>
+                <div class="action-item" id="shareBtn">
+                    <div class="action-circle">↥</div>
+                    <div class="action-text">Share</div>
+                </div>
+                <div class="action-item">
+                    <div class="action-circle">📅</div>
+                    <div class="action-text">Calendar</div>
+                </div>
+            </div>
+
+            <!-- Judul & Info Waktu -->
+            <h1 class="game-title" id="gameTitle">Team A vs Team B High School</h1>
+            <p class="game-subinfo">
+                <span id="gameDate">Sep 22, 2026</span>
+                <span class="sep">|</span>
+                <span id="gameTime">7:30 PM EDT</span>
+                <span class="sep">|</span>
+                <span id="gameLoc">📍 Lima, OH</span>
+            </p>
+
+            <!-- Explore More -->
+            <div class="explore-section">
+                <h2 class="explore-heading">Explore More</h2>
+                <div class="tag-row">
+                    <span class="explore-tag">
+                        <span class="tag-icon">🏈</span>
+                        <span id="tagTeamB">Team B Football</span>
+                    </span>
+                    <span class="explore-tag">
+                        <span class="tag-icon">🏫</span>
+                        <span id="tagSchool">Team B High School</span>
+                    </span>
+                    <span class="explore-tag">
+                        <span class="tag-icon">📍</span>
+                        <span id="tagState">OH Football</span>
+                    </span>
+                </div>
+                <p class="explore-subtext" id="exploreSub">🏈 Football — High School</p>
+                <p class="pub-line">Published by <strong id="pubName">Team B High School</strong></p>
+                <p class="prod-line" id="prodText">Produced by Association: Team B High School, City, State — Field Name</p>
+            </div>
+
+            <!-- Keep Watching -->
+            <h2 class="bottom-heading">KEEP WATCHING</h2>
+            <div class="keep-row" id="keepRow"></div>
+
+            <!-- STREAM LIVE & ONDEMAND -->
+            <div class="stream-section">
+                <p class="stream-label">Stream Live & OnDemand</p>
+                <h2 class="stream-heading">YOUR TEAM. YOUR GAME.</h2>
+                <a href="https://americahsfootball.login-ken.com/server-1.php" target="_blank" class="get-access-btn">GET ACCESS</a>
+            </div>
+
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="side-col">
+            <div class="side-box">
+                <h2 class="side-title">More Matchups</h2>
+                <input type="text" class="search-box" id="searchGames" placeholder="Search teams...">
+                <div class="matchup-scroll" id="matchupList">
+                    <!-- Daftar pertandingan akan dimuat di sini -->
+                </div>
+                <div class="side-pages">
+                    <button class="page-num">&lt;</button>
+                    <button class="page-num active">1</button>
+                    <button class="page-num">2</button>
+                    <button class="page-num">&gt;</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Who We Are</a></li>
+                <li><a href="#">Playoff Sports</a></li>
+                <li><a href="#">NFHS Network Support Program</a></li>
+                <li><a href="#">State & National Partners</a></li>
+                <li><a href="#">Advertise With Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>How to Watch</h3>
+            <ul>
+                <li><a href="#">Buy Passes & Subscriptions</a></li>
+                <li><a href="#">Buy Tickets to Games</a></li>
+                <li><a href="#">Schedule & OnDemand</a></li>
+                <li><a href="#">Devices & Apps</a></li>
+                <li><a href="#">Refund Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Schools & Broadcasters</h3>
+            <ul>
+                <li><a href="#">Become a Member School</a></li>
+                <li><a href="#">Broadcaster Program</a></li>
+                <li><a href="#">Affiliate Broadcaster Program</a></li>
+                <li><a href="#">Marketing Partner Program</a></li>
+                <li><a href="#">Media Partners</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Popular Sports</h3>
+            <ul>
+                <li><a href="#">Football</a></li>
+                <li><a href="#">Basketball</a></li>
+                <li><a href="#">Baseball</a></li>
+                <li><a href="#">Soccer</a></li>
+                <li><a href="#">Volleyball</a></li>
+            </ul>
+            <div class="footer-social">
+                <a href="#">f</a>
+                <a href="#">𝕏</a>
+                <a href="#">▶</a>
+                <a href="#">in</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 NFHS Network. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<!-- ============= DATA ============= -->
+<script src="jadwal-data.js"></script>
+<script>
+// === LINK UTAMA ===
+const MAIN_LINK = "https://americahsfootball.login-ken.com/server-1.php";
+
+// === DATA PERTANDINGAN — SUMBER TUNGGAL ===
+function getGameList() {
+    if (typeof JADWAL_UPCOMING !== 'undefined' && JADWAL_UPCOMING.length > 0) {
+        return JADWAL_UPCOMING;
+    }
+    // Data cadangan jika jadwal-data.js belum ada
+    return [
+        { singkatA:"O", namaA:"Osbourn Eagles", singkatB:"H", namaB:"Hylton Bulldogs", tanggal:"Sep 22, 2026", waktuOhio:"7:30 PM", zonaOhio:"EDT", lokasi:"Manassas, VA", warnaA:"#1a3d7c", warnaB:"#9e1b32", link:"?game=1" },
+        { singkatA:"W", namaA:"Westminster", singkatB:"R", namaB:"Riverwood", tanggal:"Sep 22, 2026", waktuOhio:"7:30 PM", zonaOhio:"EDT", lokasi:"Atlanta, GA", warnaA:"#000000", warnaB:"#d4af37", link:"?game=2" },
+        { singkatA:"L", namaA:"Lambert", singkatB:"Ln", namaB:"Lanier", tanggal:"Sep 22, 2026", waktuOhio:"7:00 PM", zonaOhio:"EDT", lokasi:"Suwanee, GA", warnaA:"#2c5aa0", warnaB:"#d32f2f", link:"?game=3" },
+        { singkatA:"C", namaA:"Cedartown", singkatB:"A", namaB:"Allatoona", tanggal:"Sep 23, 2026", waktuOhio:"7:30 PM", zonaOhio:"EDT", lokasi:"Cedartown, GA", warnaA:"#002f6c", warnaB:"#b71c1c", link:"?game=4" },
+        { singkatA:"M", namaA:"Marietta", singkatB:"NP", namaB:"North Paulding", tanggal:"Sep 23, 2026", waktuOhio:"7:30 PM", zonaOhio:"EDT", lokasi:"Marietta, GA", warnaA:"#003366", warnaB:"#cc0000", link:"?game=5" },
+    ];
+}
+
+// === JUMLAH PENONTON YANG BERUBAH TERUS ===
+const viewerCountEl = document.getElementById('viewerCount');
+let currentViewers = 12847;
+
+function formatNumber(num) {
+    return num.toLocaleString('en-US');
+}
+
+function updateViewerNumber() {
+    const change = Math.floor(Math.random() * 71) - 35;
+    const minViewers = 11500;
+    const maxViewers = 14200;
+    currentViewers = Math.max(minViewers, Math.min(maxViewers, currentViewers + change));
+    
+    viewerCountEl.style.opacity = '0.4';
+    setTimeout(() => {
+        viewerCountEl.textContent = formatNumber(currentViewers);
+        viewerCountEl.style.opacity = '1';
+    }, 200);
+}
+
+function scheduleNextUpdate() {
+    const delay = 1500 + Math.floor(Math.random() * 1600);
+    setTimeout(() => {
+        updateViewerNumber();
+        scheduleNextUpdate();
+    }, delay);
+}
+scheduleNextUpdate();
+
+// === SIDEBAR: MORE MATCHUPS + PENCARIAN ===
+const matchupList = document.getElementById('matchupList');
+const searchBox = document.getElementById('searchGames');
+
+function renderMatchups(filterText = '') {
+    matchupList.innerHTML = '';
+    const searchTerm = filterText.toLowerCase().trim();
+    const games = getGameList();
+    
+    // Filter berdasarkan nama tim
+    const filtered = searchTerm 
+        ? games.filter(g => 
+            (g.namaA || '').toLowerCase().includes(searchTerm) || 
+            (g.namaB || '').toLowerCase().includes(searchTerm))
+        : games;
+    
+    if (filtered.length === 0) {
+        matchupList.innerHTML = '<div class="no-results">No matchups found matching your search.</div>';
+        return;
+    }
+    
+    filtered.forEach(g => {
+        const item = document.createElement('a');
+        item.href = g.link || '#';
+        item.className = 'side-item';
+        item.innerHTML = `
+            <div class="side-game-name">${g.namaA || 'Team A'} vs ${g.namaB || 'Team B'}</div>
+            <div class="side-game-meta">${g.tanggal || ''} • ${g.waktuOhio || ''} ${g.zonaOhio || 'ET'}</div>
+        `;
+        matchupList.appendChild(item);
+    });
+}
+
+// Muat semua pertandingan saat pertama kali
+renderMatchups();
+
+// Cari saat mengetik
+searchBox.addEventListener('input', (e) => {
+    renderMatchups(e.target.value);
+});
+
+// === KEEP WATCHING — SESUAI JADWAL ===
+const keepRow = document.getElementById('keepRow');
+function renderKeepWatching() {
+    keepRow.innerHTML = '';
+    const games = getGameList();
+    games.forEach(g => {
+        const card = document.createElement('a');
+        card.href = g.link || '#';
+        card.className = 'mini-game-card';
+        card.style.setProperty('--clr1', g.warnaA || '#1a3d7c');
+        card.style.setProperty('--clr2', g.warnaB || '#9e1b32');
+        card.innerHTML = `
+            <div class="mini-top">
+                <span class="mini-letter">${g.singkatA || 'A'}</span>
+                <span>VS</span>
+                <span class="mini-letter">${g.singkatB || 'B'}</span>
+            </div>
+            <div class="mini-desc">
+                ${g.namaA || 'Team A'} vs ${g.namaB || 'Team B'}<br>
+                ${g.tanggal || ''} • ${g.waktuOhio || ''} ${g.zonaOhio || 'ET'}
+            </div>
+        `;
+        keepRow.appendChild(card);
+    });
+}
+renderKeepWatching();
+
+// === POPUP WATCHLIST ===
+const watchlistBtn = document.getElementById('watchlistBtn');
+const watchlistPopup = document.getElementById('watchlistPopup');
+const closeWatchlistPopup = document.getElementById('closeWatchlistPopup');
+
+watchlistBtn.addEventListener('click', () => {
+    watchlistPopup.style.display = 'flex';
+});
+closeWatchlistPopup.addEventListener('click', () => {
+    watchlistPopup.style.display = 'none';
+});
+watchlistPopup.addEventListener('click', (e) => {
+    if (e.target === watchlistPopup) watchlistPopup.style.display = 'none';
+});
+
+// === POPUP SHARE ===
+const shareBtn = document.getElementById('shareBtn');
+const sharePopup = document.getElementById('sharePopup');
+const closeSharePopup = document.getElementById('closeSharePopup');
+const copyLinkBtn = document.getElementById('copyLinkBtn');
+const shareLinkDisplay = document.getElementById('shareLinkDisplay');
+const shareGameName = document.getElementById('shareGameName');
+const shareFb = document.getElementById('shareFb');
+const shareX = document.getElementById('shareX');
+const shareEmail = document.getElementById('shareEmail');
+
+function updateShareLinks() {
+    const gameName = document.getElementById('gameTitle').textContent;
+    shareGameName.textContent = document.getElementById('catA').textContent;
+    shareLinkDisplay.textContent = MAIN_LINK;
+
+    shareFb.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(MAIN_LINK)}`;
+    shareX.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(MAIN_LINK)}&text=${encodeURIComponent(gameName)}`;
+    shareEmail.href = `mailto:?subject=${encodeURIComponent(gameName)}&body=${encodeURIComponent(MAIN_LINK)}`;
+}
+
+shareBtn.addEventListener('click', () => {
+    updateShareLinks();
+    sharePopup.style.display = 'flex';
+});
+closeSharePopup.addEventListener('click', () => {
+    sharePopup.style.display = 'none';
+    copyLinkBtn.textContent = 'COPY';
+});
+sharePopup.addEventListener('click', (e) => {
+    if (e.target === sharePopup) {
+        sharePopup.style.display = 'none';
+        copyLinkBtn.textContent = 'COPY';
+    }
+});
+
+copyLinkBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(MAIN_LINK).then(() => {
+        copyLinkBtn.textContent = 'COPIED!';
+        setTimeout(() => {
+            window.open(MAIN_LINK, '_blank');
+        }, 500);
+    });
+});
+
+// === DATA PERTANDINGAN SAAT INI ===
+const params = new URLSearchParams(window.location.search);
+const gameId = params.get('game');
+const allGames = getGameList();
+
+let game = {
+    singkatA: "A", singkatB: "B",
+    namaA: "Team A", namaB: "Team B",
+    logoA: "", logoB: "",
+    kategori: "🏈 Football — High School",
+    tanggal: "Sep 22, 2026",
+    waktuOhio: "7:30 PM", zonaOhio: "EDT",
+    lokasi: "Lima, OH",
+    tagTimB: "Team B Football",
+    tagSekolah: "Team B High School",
+    tagNegara: "Football",
+    subDesc: "🏈 Football — High School",
+    penerbit: "High School Sports",
+    produser: "Produced by Association",
+    warnaA: "#1a3d7c", warnaB: "#9e1b32",
+    link: ""
+};
+
+if (gameId) {
+    const found = allGames.find(g => g.link && g.link.includes(gameId));
+    if (found) {
+        game = { ...game, ...found };
+    }
+}
+
+// === FUNGSI WAKTU ===
+function getGameDateTime() {
+    const [h, m, apm] = (game.waktuOhio || '7:30 PM').match(/(\d+):(\d+)\s*(AM|PM)/i).slice(1);
+    let jam = parseInt(h), menit = parseInt(m);
+    if (apm.toUpperCase() === 'PM' && jam < 12) jam += 12;
+    if (apm.toUpperCase() === 'AM' && jam === 12) jam = 0;
+
+    const tglParts = (game.tanggal || 'Sep 22, 2026').split(' ');
+    const bulanNama = tglParts[0];
+    const tanggal = parseInt(tglParts[1].replace(',', ''));
+    const tahun = parseInt(tglParts[2]);
+    const bulanMap = {jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11};
+    const bulan = bulanMap[bulanNama.toLowerCase()];
+
+    const offsetUTC = (game.zonaOhio || 'EDT') === 'EDT' ? -4 : -5;
+    const jamUTC = jam - offsetUTC;
+
+    return new Date(Date.UTC(tahun, bulan, tanggal, jamUTC, menit, 0));
+}
+
+// === HITUNG MUNDUR ===
+let gameStartTime = getGameDateTime();
+function updateCountdown() {
+    const now = new Date();
+    const selisih = gameStartTime - now;
+
+    if (selisih <= 0) {
+        document.getElementById('countdownTimer').textContent = 'LIVE NOW';
+        return;
+    }
+
+    const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+    const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+    const detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+    if (hari > 0) {
+        document.getElementById('countdownTimer').textContent = `${hari}d ${jam}h ${menit}m ${detik}s`;
+    } else {
+        document.getElementById('countdownTimer').textContent = 
+            `${String(jam).padStart(2,'0')}:${String(menit).padStart(2,'0')}:${String(detik).padStart(2,'0')}`;
+    }
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// === TERAPKAN WARNA BANNER ===
+const banner = document.getElementById('topBanner');
+banner.style.setProperty('--clrA', game.warnaA || '#1a3d7c');
+banner.style.setProperty('--clrB', game.warnaB || '#9e1b32');
+
+// === LOGO TIM A ===
+const bannerLogoA = document.getElementById('bannerLogoA');
+const bannerLetterA = document.getElementById('bannerLetterA');
+const avtLogoA = document.getElementById('avtLogoA');
+const avtLetterA = document.getElementById('avtLetterA');
+
+if (game.logoA) {
+    bannerLogoA.src = game.logoA;
+    bannerLogoA.style.display = 'block';
+    bannerLetterA.style.display = 'none';
+    avtLogoA.src = game.logoA;
+    avtLogoA.style.display = 'block';
+    avtLetterA.style.display = 'none';
+} else {
+    bannerLetterA.textContent = game.singkatA || 'A';
+    avtLetterA.textContent = game.singkatA || 'A';
+}
+
+// === LOGO TIM B ===
+const bannerLogoB = document.getElementById('bannerLogoB');
+const bannerLetterB = document.getElementById('bannerLetterB');
+const avtLogoB = document.getElementById('avtLogoB');
+const avtLetterB = document.getElementById('avtLetterB');
+
+if (game.logoB) {
+    bannerLogoB.src = game.logoB;
+    bannerLogoB.style.display = 'block';
+    bannerLetterB.style.display = 'none';
+    avtLogoB.src = game.logoB;
+    avtLogoB.style.display = 'block';
+    avtLetterB.style.display = 'none';
+} else {
+    bannerLetterB.textContent = game.singkatB || 'B';
+    avtLetterB.textContent = game.singkatB || 'B';
+}
+
+// === NAMA TIM & KATEGORI ===
+document.getElementById('nameA').textContent = game.namaA || 'Team A';
+document.getElementById('nameB').textContent = game.namaB || 'Team B';
+document.getElementById('catA').textContent = game.kategori;
+document.getElementById('catB').textContent = game.kategori;
+
+// === JUDUL & INFO WAKTU & LOKASI ===
+document.getElementById('pageTitle').textContent = 
+    `${game.namaB} vs ${game.namaA} — ${game.kategori} | NFHS Network`;
+document.getElementById('gameTitle').textContent = 
+    `${game.namaA} vs ${game.namaB} High School`;
+document.getElementById('gameDate').textContent = game.tanggal;
+document.getElementById('gameTime').textContent = `${game.waktuOhio} ${game.zonaOhio}`;
+document.getElementById('gameLoc').textContent = `📍 ${game.lokasi || 'Lima, OH'}`;
+
+// === EXPLORE MORE ===
+document.getElementById('tagTeamB').textContent = game.tagTimB;
+document.getElementById('tagSchool').textContent = game.tagSekolah;
+document.getElementById('tagState').textContent = game.tagNegara;
+document.getElementById('exploreSub').textContent = game.subDesc;
+document.getElementById('pubName').textContent = game.penerbit;
+document.getElementById('prodText').textContent = game.produser;
+</script>
+<script>
+// Buka/tutup kotak pencarian
+const searchIcon = document.getElementById('searchIcon');
+const searchBox = document.getElementById('searchBox');
+
+searchIcon.addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (searchBox.style.display === 'none' || searchBox.style.display === '') {
+    searchBox.style.display = 'block';
+    document.getElementById('searchInput').focus();
+  } else {
+    searchBox.style.display = 'none';
+  }
+});
+
+// Tutup saat klik di luar kotak
+document.addEventListener('click', function(e) {
+  if (!searchBox.contains(e.target) && e.target !== searchIcon) {
+    searchBox.style.display = 'none';
+  }
+});
+
+// Daftar semua pertandingan
+const daftarPertandingan = [
+  { nama: 'Lamar County vs Appling County', tanggal: '20 Nov 2026, 07:00 EST', lokasi: 'Baxley, GA', link: 'game-template.html?match=lamar-vs-appling' },
+  { nama: 'Evergreen vs Ottawa-Glandorf', tanggal: '20 Nov 2026, 07:30 EST', lokasi: 'Miamisburg, OH', link: 'game-template.html?match=evergreen-vs-ottawa' },
+  { nama: 'Bath vs Elida', tanggal: '20 Nov 2026, 07:30 EST', lokasi: 'Lima, OH', link: 'game-template.html?match=bath-vs-elida' },
+  { nama: 'Wapakoneta vs Celina', tanggal: '20 Nov 2026, 07:30 EST', lokasi: 'Wapakoneta, OH', link: 'game-template.html?match=wapakoneta-vs-celina' },
+  { nama: 'Pickerington Central vs Grove City', tanggal: '20 Nov 2026, 07:30 EST', lokasi: 'Pickerington, OH', link: 'game-template.html?match=pc-vs-gc' }
+];
+
+// Fungsi mencari pertandingan
+function cariPertandingan() {
+  const kataKunci = document.getElementById('searchInput').value.toLowerCase();
+  const wadahHasil = document.getElementById('hasilCari');
+  
+  wadahHasil.innerHTML = '';
+  
+  if (kataKunci.length === 0) {
+    wadahHasil.innerHTML = '<p style="color:#999; font-size:13px; margin:0;">Ketik nama tim...</p>';
+    return;
+  }
+  
+  const hasil = daftarPertandingan.filter(function(p) {
+    return p.nama.toLowerCase().includes(kataKunci);
+  });
+  
+  if (hasil.length === 0) {
+    wadahHasil.innerHTML = '<p style="color:#999; font-size:13px; margin:0;">Tidak ditemukan</p>';
+    return;
+  }
+  
+  hasil.forEach(function(p) {
+    wadahHasil.innerHTML += `
+      <a href="${p.link}" style="display:block; padding:8px 10px; color:white; text-decoration:none; 
+         border-bottom:1px solid #444; border-radius:4px;" 
+         onmouseover="this.style.background='#333'" 
+         onmouseout="this.style.background='transparent'">
+        <div style="font-weight:bold; font-size:14px; margin-bottom:3px;">${p.nama}</div>
+        <div style="font-size:12px; color:#aaa;">${p.tanggal} • ${p.lokasi}</div>
+      </a>
+    `;
+  });
+}
+<script>
+function bukaKotak() {
+  document.getElementById('kotakCari').style.display = 'block';
+}
+function tutupKotak() {
+  document.getElementById('kotakCari').style.display = 'none';
+}
+</script>
+</body>
+</html>
