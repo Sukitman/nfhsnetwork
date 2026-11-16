@@ -927,25 +927,5 @@ document.addEventListener('click', function(e) {
 </script>
 
 </script>
-const menuBtn = document.getElementById('menu-btn');
-const sideMenu = document.getElementById('side-menu');
-const menuClose = document.getElementById('menu-close');
-
-menuBtn.addEventListener('click', function(e) {
-  e.stopPropagation();
-  sideMenu.classList.add('open');
-});
-
-menuClose.addEventListener('click', function() {
-  sideMenu.classList.remove('open');
-});
-
-document.addEventListener('click', function(e) {
-  if (!sideMenu.contains(e.target) && e.target !== menuBtn) {
-    sideMenu.classList.remove('open');
-  }
-});
-</script>
-
 </body>
 </html>
